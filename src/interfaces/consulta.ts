@@ -1,12 +1,20 @@
 import { Medico } from "./medico";
-import { Paciente } from "../types/paciente";
-import { StatusConsulta } from "../types/statusConsulta";
+
+// src/interfaces/consulta.ts
 export interface Consulta {
   id: number;
   medico: Medico;
   paciente: Paciente;
   data: Date;
   valor: number;
-  status: StatusConsulta;
-  observacoes?: string;
+  status: "agendada" | "confirmada" | "cancelada";
+  observacoes: string;
+}
+
+// src/types/paciente.ts  
+export interface Paciente {
+  nome: string;
+  cpf: string;
+  email: string;
+  telefone?: string;
 }
