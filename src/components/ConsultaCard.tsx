@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   
   // Badge de status (agendada, confirmada, cancelada)
   statusBadge: {
-    backgroundColor: "#FFA500", // Laranja (padrão para "agendada")
+    backgroundColor: "#000000", // Laranja (padrão para "agendada")
     alignSelf: "flex-start",
     paddingHorizontal: 16,
     paddingVertical: 8,
