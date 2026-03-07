@@ -1,12 +1,15 @@
 import { Medico } from "./medico";
-import { Paciente } from "../types/paciente";
-import { StatusConsulta } from "../types/statusConsulta";
+
+// src/interfaces/consulta.ts
 export interface Consulta {
-  id: number;
-  medico: Medico;
-  paciente: Paciente;
+  id: string;
   data: Date;
-  valor: number;
-  status: StatusConsulta;
-  observacoes?: string;
+  medico: Medico;   // ← usado em vários lugares
+  paciente: Paciente; // ← usado em vários lugares
 }
+
+// src/types/paciente.ts  
+export type Paciente = {
+  nome: string;
+  cpf: string;
+};
