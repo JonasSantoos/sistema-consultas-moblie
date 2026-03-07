@@ -1,57 +1,96 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-type Consulta = {
-  id: number;
-  paciente: string;
-  medico: string;
-  data: string;
-  status: "agendada" | "confirmada" | "cancelada" | "realizada";
-};
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { StatusBar } from "expo-status-bar";
+
+// Importando a modelagem TypeScript
+import { Especialidade } from "./src/types/especialidade";
+import { Paciente } from "./src/types/paciente";
+import { Medico } from "./src/interfaces/medico";
+import { Consulta } from "./src/interfaces/consulta";
+
+// Importando o componente reutilizável
+import ConsultaCard from "./src/components/ConsultaCard";
+
 export default function App() {
+  // Dados base (simulando o que tínhamos no backend)
+  const cardiologia: Especialidade = {
+    id: 1,
+    nome: "Cardiologia",
+    descricao: "Cuidados com o coração",
+  };
+
+  const medico1: Medico = {
+    id: 1,
+    nome: "Dr. Roberto Silva",
+    crm: "CRM12345",
+    especialidade: cardiologia,
+    ativo: true,
+  };
+
+  const paciente1: Paciente = {
+    id: 1,
+    nome: "Carlos Andrade",
+    cpf: "123.456.789-00",
+    email: "carlos@email.com",
+    telefone: "(11) 98765-4321",
+  };
+
+  // Estado da consulta
   const [consulta, setConsulta] = useState<Consulta>({
     id: 1,
-    paciente: "Carlos Andrade",
-    medico: "Dr. Roberto Silva",
-    data: "28/02/2026",
+    medico: medico1,
+    paciente: paciente1,
+    data: new Date(2026, 2, 10), // 10/03/2026
+    valor: 350,
     status: "agendada",
+    observacoes: "Consulta de rotina",
   });
+
+
   function confirmarConsulta() {
     setConsulta({
       ...consulta,
       status: "confirmada",
     });
   }
+
+  function cancelarConsulta() {
+    setConsulta({
+      ...consulta,
+      status: "cancelada",
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Sistema de Consultas</Text>
-      <View style={styles.card}>
-        <Text>Paciente: {consulta.paciente}</Text>
-        <Text>Médico: {consulta.medico}</Text>
-        <Text>Data: {consulta.data}</Text>
-        <Text>Status: {consulta.status}</Text>
-        {consulta.status === "agendada" && (
-          <Button title="Confirmar Consulta" onPress={confirmarConsulta} />
-        )}
-      </View>
+      <StatusBar style="light" />
+
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Cabeçalho */}
+        <View style={styles.header}>
+          <Text style={styles.titulo}>Sistema de Consultas</Text>
+          <Text style={styles.subtitulo}>Consulta #{consulta.id}</Text>
+        </View>
+
+        {/* 
+          Componente ConsultaCard
+          
+          Veja como ficou mais simples!
+          Antes: ~100 linhas de JSX no App.tsx
+          Agora: 1 componente reutilizável
+          
+          Props:
+          - consulta: objeto com todos os dados
+          - onConfirmar: função a ser chamada ao confirmar
+          - onCancelar: função a ser chamada ao cancelar
+        */}
+        <ConsultaCard
+          consulta={consulta}
+          onConfirmar={confirmarConsulta}
+          onCancelar={cancelarConsulta}
+        />
+
+      </ScrollView>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffd6d6",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  titulo: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  card: {
-    width: "80%",
-    padding: 20,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-});
