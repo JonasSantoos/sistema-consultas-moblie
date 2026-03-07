@@ -2,10 +2,13 @@ import { Medico } from "./medico";
 
 // src/interfaces/consulta.ts
 export interface Consulta {
-  id: string;
+  id: number;
+  medico: Medico;
+  paciente: Paciente;
   data: Date;
-  medico: Medico;   // ← usado em vários lugares
-  paciente: Paciente; // ← usado em vários lugares
+  valor: number;
+  status: "agendada" | "confirmada" | "cancelada";
+  observacoes: string;
 }
 
 // src/types/paciente.ts  
